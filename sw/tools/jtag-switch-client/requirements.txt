@@ -1,0 +1,11 @@
+# Python dependencies for JTAG Switch Client
+# Install with: pip install -r requirements.txt
+
+# HTTP client for REST API
+requests>=2.31.0
+
+# Serial communication for USB interface
+pyserial>=3.5
+
+# USB device enumeration (improves serial port auto-detection)
+pyusb>=1.2.1

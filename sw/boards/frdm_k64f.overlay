@@ -1,0 +1,60 @@
+/*
+ * FRDM-K64F JTAG Switch GPIO Configuration
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Uses Arduino connector pins:
+ *   D2 = PTB9 (GPIOB pin 9)
+ *   D3 = PTA1 (GPIOA pin 1)
+ */
+
+/ {
+	aliases {
+		jtag-select0 = &jtag_select0_gpio;
+		jtag-select1 = &jtag_select1_gpio;
+	};
+
+	chosen {
+		zephyr,console = &cdc_acm_uart0;
+		zephyr,shell-uart = &cdc_acm_uart0;
+		zephyr,settings-partition = &storage_partition;
+	};
+
+	jtag_select_gpios {
+		compatible = "gpio-leds";
+
+		jtag_select0_gpio: jtag_select_0 {
+			gpios = <&gpiob 9 GPIO_ACTIVE_HIGH>;
+			label = "JTAG Select 0";
+		};
+
+		jtag_select1_gpio: jtag_select_1 {
+			gpios = <&gpioa 1 GPIO_ACTIVE_HIGH>;
+			label = "JTAG Select 1";
+		};
+	};
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};
+
+/* Step 2: Fix IRQ Priority Inversion
+ * Lower Ethernet IRQ priority from 0 to 3
+ * Keep USB at priority 1 (higher than Ethernet)
+ * This ensures USB interrupts are not blocked by Ethernet
+ */
+&enet_mac {
+	interrupts = <83 3>, <84 3>, <85 3>;  /* TX, RX, ERR at priority 3 */
+	interrupt-names = "TX", "RX", "ERR";
+};
+
+&enet_ptp_clock {
+	interrupts = <82 3>;  /* PTP timer at priority 3 */
+};
+
+&usbotg {
+	interrupts = <53 1>;  /* USB at priority 1 (higher priority) */
+};
+

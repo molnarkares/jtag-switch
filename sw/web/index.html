@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JTAG Switch</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JTAG Switch Control</h1>
+            <div id="connection-status" class="status-indicator disconnected">Connecting...</div>
+        </header>
+
+        <section class="card">
+            <h2>JTAG Control</h2>
+            <div class="control-group">
+                <div class="line-control">
+                    <h3>Line 0 <span id="line0-state" class="state-badge">Disabled</span></h3>
+                    <button onclick="setSelect(0, 0)" class="btn">Disable</button>
+                    <button onclick="setSelect(0, 1)" class="btn">Enable</button>
+                    <button onclick="toggle(0)" class="btn btn-secondary">Toggle</button>
+                </div>
+                <div class="line-control">
+                    <h3>Line 1 <span id="line1-state" class="state-badge">Disabled</span></h3>
+                    <button onclick="setSelect(1, 0)" class="btn">Disable</button>
+                    <button onclick="setSelect(1, 1)" class="btn">Enable</button>
+                    <button onclick="toggle(1)" class="btn btn-secondary">Toggle</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Network Configuration</h2>
+            <div id="network-info" class="info-grid">
+                <div class="info-item"><strong>IP:</strong> <span id="net-ip">-</span></div>
+                <div class="info-item"><strong>MAC:</strong> <span id="net-mac">-</span></div>
+                <div class="info-item"><strong>Mode:</strong> <span id="net-mode">-</span></div>
+                <div class="info-item"><strong>Link:</strong> <span id="net-link" class="status-led">●</span></div>
+            </div>
+            <button onclick="showNetworkConfig()" class="btn btn-secondary">Configure</button>
+        </section>
+
+        <section class="card">
+            <h2>System Information</h2>
+            <div id="system-info" class="info-grid">
+                <div class="info-item"><strong>Device:</strong> <span id="sys-device">-</span></div>
+                <div class="info-item"><strong>Version:</strong> <span id="sys-version">-</span></div>
+                <div class="info-item"><strong>Uptime:</strong> <span id="sys-uptime">-</span></div>
+                <div class="info-item"><strong>RAM:</strong> <span id="sys-ram">-</span></div>
+            </div>
+        </section>
+    </div>
+
+    <div id="config-modal" class="modal">
+        <div class="modal-content">
+            <h2>Network Configuration</h2>
+            <form id="network-form">
+                <label>
+                    <input type="radio" name="mode" value="dhcp" checked> DHCP
+                    <input type="radio" name="mode" value="static"> Static IP
+                </label>
+                <div id="static-fields" style="display:none;">
+                    <input type="text" id="ip" placeholder="IP Address">
+                    <input type="text" id="netmask" placeholder="Netmask">
+                    <input type="text" id="gateway" placeholder="Gateway">
+                </div>
+                <button type="submit" class="btn">Save & Restart</button>
+                <button type="button" onclick="hideNetworkConfig()" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
