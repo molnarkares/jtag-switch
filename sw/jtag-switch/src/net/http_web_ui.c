@@ -16,15 +16,15 @@
 LOG_MODULE_REGISTER(http_web_ui, LOG_LEVEL_INF);
 
 /* Embedded web resources (in FLASH/ROM) - UNCOMPRESSED */
-static uint8_t index_html[] = {
+static const uint8_t index_html[] = {
 	#include "index.html.gz.inc"
 };
 
-static uint8_t style_css[] = {
+static const uint8_t style_css[] = {
 	#include "style.css.gz.inc"
 };
 
-static uint8_t app_js[] = {
+static const uint8_t app_js[] = {
 	#include "app.js.gz.inc"
 };
 
