@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  *
  * Uses Arduino connector pins:
- *   D2 = PTB9 (GPIOB pin 9)
- *   D3 = PTA1 (GPIOA pin 1)
+ *   D2 = PTD2 (GPIOD pin 2)
+ *   D3 = PTD0 (GPIOD pin 0)
  */
 
 / {
@@ -23,12 +23,12 @@
 		compatible = "gpio-leds";
 
 		jtag_select0_gpio: jtag_select_0 {
-			gpios = <&gpiob 9 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpiod 2 GPIO_ACTIVE_HIGH>;
 			label = "JTAG Select 0";
 		};
 
 		jtag_select1_gpio: jtag_select_1 {
-			gpios = <&gpioa 1 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpiod 0 GPIO_ACTIVE_HIGH>;
 			label = "JTAG Select 1";
 		};
 	};

@@ -22,9 +22,9 @@ This application controls two GPIO outputs that independently select between JTA
 
 The application supports any Zephyr-compatible microcontroller EVB. Pre-configured device tree overlays are provided for common development boards:
 
-| Board | Select0 Pin | Select1 Pin | Notes |
-|-------|-------------|-------------|-------|
-| FRDM-K64F | PTB9 (Arduino D2) | PTA1 (Arduino D3) | Primary development board with Ethernet |
+| Board | Select0 Pin | Select1 Pin       | Notes |
+|-------|-------------|-------------------|-------|
+| FRDM-K64F | PTD2 | PTD0 | Primary development board with Ethernet |
 
 **Adding New Boards**: Any Zephyr-supported board can be used by creating a simple device tree overlay that maps two GPIO pins. See "Adding Support for New Boards" section below.
 
@@ -69,8 +69,8 @@ minicom -D /dev/ttyACM0 -b 115200
 [00:00:00.001,000] <inf> jtag_switch: JTAG Switch Application Starting
 [00:00:00.001,000] <inf> jtag_switch: Board: frdm_k64f
 [00:00:00.002,000] <inf> gpio_control: GPIO control initialized:
-[00:00:00.002,000] <inf> gpio_control:   jtag-select0: GPIOB pin 9
-[00:00:00.002,000] <inf> gpio_control:   jtag-select1: GPIOA pin 1
+[00:00:00.002,000] <inf> gpio_control:   jtag-select0: GPIOD pin 2
+[00:00:00.002,000] <inf> gpio_control:   jtag-select1: GPIOD pin 0
 [00:00:00.003,000] <inf> jtag_switch: GPIO control initialized successfully
 [00:00:00.003,000] <inf> jtag_switch: JTAG Switch ready - Default: Connector 0 selected
 ```
