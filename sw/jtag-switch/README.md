@@ -2,6 +2,10 @@
 
 A Zephyr RTOS application for controlling JTAG connector multiplexing using two independent GPIO outputs.
 
+## Use Case
+
+The JTAG Switch solves a common challenge in automated hardware testing: efficiently sharing expensive or limited-availability JTAG debuggers across multiple test benches. In CI/CD pipelines running hardware regression tests, purchasing dedicated debuggers for each test bench can be cost-prohibitive, especially when debuggers are scarce or expensive. This switch enables a single JTAG debugger to be dynamically routed between two independent hardware test benches, maximizing hardware utilization while maintaining testing throughput. The programmable switching is controlled via USB serial or network API, making it ideal for integration into automated test frameworks.
+
 ## Overview
 
 This application controls two GPIO outputs that independently select between JTAG connectors on an Arduino-compatible hardware interface. The software is designed to run on any microcontroller evaluation board (EVB) with either USB or Ethernet connectivity. The hardware interface uses standard Arduino pinout, allowing direct connection to any EVB with Arduino-compatible headers.
