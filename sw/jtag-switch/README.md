@@ -22,9 +22,9 @@ This application controls two GPIO outputs that independently select between JTA
 
 The application supports any Zephyr-compatible microcontroller EVB. Pre-configured device tree overlays are provided for common development boards:
 
-| Board | Select0 Pin | Select1 Pin       | Notes |
-|-------|-------------|-------------------|-------|
-| FRDM-K64F | PTD2 | PTD0 | Primary development board with Ethernet |
+| Board     | Select0 Pin | Select1 Pin | Notes                                   |
+|-----------|-------------|-------------|-----------------------------------------|
+| FRDM-K64F | PTD2        | PTD0        | Primary development board with Ethernet |
 
 **Adding New Boards**: Any Zephyr-supported board can be used by creating a simple device tree overlay that maps two GPIO pins. See "Adding Support for New Boards" section below.
 
@@ -121,7 +121,7 @@ See `src/gpio_control.h` for the complete API:
 };
 ```
 
-3. Build with: `west build -b <board_name> jtag-switch`
+1. Build with: `west build -b <board_name> jtag-switch`
 
 ## Control Interfaces
 
