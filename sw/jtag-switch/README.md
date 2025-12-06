@@ -26,6 +26,7 @@ The application supports any Zephyr-compatible microcontroller EVB. Pre-configur
 |-----------------|-------------|-------------|-----------------------------------------|
 | FRDM-K64F       | PTD2        | PTD0        | Primary development board with Ethernet |
 | Nucleo F439ZI   | PA7         | PD14        | STM32F439ZI with Ethernet               |
+| FRDM-MCXC444    | PTD6        | PTD4        | USB-only (no Ethernet), shell control   |
 
 **Adding New Boards**: Any Zephyr-supported board can be used by creating a simple device tree overlay that maps two GPIO pins. See "Adding Support for New Boards" section below.
 
@@ -49,6 +50,12 @@ west build -b frdm_k64f jtag-switch
 
 ```bash
 west build -b nucleo_f439zi jtag-switch
+```
+
+### Build for FRDM-MCXC444 (USB shell only, no network)
+
+```bash
+west build -b frdm_mcxc444 jtag-switch
 ```
 
 ## Flashing

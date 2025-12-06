@@ -1,0 +1,43 @@
+/*
+ * NXP FRDM-MCXC444 JTAG Switch GPIO Configuration
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Uses GPIO pins:
+ *   jtag-select0 = PTD6 (GPIOD pin 6)
+ *   jtag-select1 = PTD4 (GPIOD pin 4)
+ *
+ * Note: This board has USB but NO Ethernet.
+ *       Only USB serial shell control is available.
+ */
+
+/ {
+	aliases {
+		jtag-select0 = &jtag_select0_gpio;
+		jtag-select1 = &jtag_select1_gpio;
+	};
+
+	chosen {
+		zephyr,console = &cdc_acm_uart0;
+		zephyr,shell-uart = &cdc_acm_uart0;
+	};
+
+	jtag_select_gpios {
+		compatible = "gpio-leds";
+
+		jtag_select0_gpio: jtag_select_0 {
+			gpios = <&gpiod 6 GPIO_ACTIVE_HIGH>;
+			label = "JTAG Select 0";
+		};
+
+		jtag_select1_gpio: jtag_select_1 {
+			gpios = <&gpiod 4 GPIO_ACTIVE_HIGH>;
+			label = "JTAG Select 1";
+		};
+	};
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};
