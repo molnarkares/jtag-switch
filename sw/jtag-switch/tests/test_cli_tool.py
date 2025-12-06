@@ -246,9 +246,10 @@ class TestCommandExecution(unittest.TestCase):
     def test_device_info_execution(self):
         """Test device info command execution"""
         args = self.parser.parse_args(['--interface', 'serial', 'device', 'info'])
+        # Board name is example mock data - actual device may be frdm_k64f, nucleo_f439zi, etc.
         expected_result = {
             'success': True,
-            'data': {'device': 'JTAG Switch', 'board': 'frdm_k64f'},
+            'data': {'device': 'JTAG Switch', 'board': 'test_board'},
             'message': 'Device info'
         }
         self.mock_client.device_info.return_value = expected_result

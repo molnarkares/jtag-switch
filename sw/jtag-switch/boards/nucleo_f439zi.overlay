@@ -1,0 +1,51 @@
+/*
+ * ST Nucleo F439ZI JTAG Switch GPIO Configuration
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Uses Arduino connector pins:
+ *   D11 = PA7 (GPIOA pin 7)
+ *   D10 = PD14 (GPIOD pin 14)
+ */
+
+/ {
+	aliases {
+		jtag-select0 = &jtag_select0_gpio;
+		jtag-select1 = &jtag_select1_gpio;
+	};
+
+	chosen {
+		zephyr,console = &cdc_acm_uart0;
+		zephyr,shell-uart = &cdc_acm_uart0;
+		zephyr,settings-partition = &storage_partition;
+	};
+
+	jtag_select_gpios {
+		compatible = "gpio-leds";
+
+		jtag_select0_gpio: jtag_select_0 {
+			gpios = <&gpioa 7 GPIO_ACTIVE_HIGH>;
+			label = "JTAG Select 0";
+		};
+
+		jtag_select1_gpio: jtag_select_1 {
+			gpios = <&gpiod 14 GPIO_ACTIVE_HIGH>;
+			label = "JTAG Select 1";
+		};
+	};
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};
+
+/* Enable NVS storage partition for network settings persistence */
+&flash0 {
+	partitions {
+		storage_partition: partition@8000 {
+			label = "storage";
+			reg = <0x00008000 DT_SIZE_K(32)>;
+		};
+	};
+};

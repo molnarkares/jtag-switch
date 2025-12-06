@@ -24,7 +24,9 @@ The shield plugs into any Arduino-compatible microcontroller evaluation board an
 
 Zephyr RTOS firmware for controlling the JTAG switch hardware:
 - **Platform**: Runs on any Zephyr-supported microcontroller with Arduino headers
-- **Primary Board**: FRDM-K64F (NXP Kinetis K64) with Ethernet support
+- **Supported Boards**:
+  - FRDM-K64F (NXP Kinetis K64) - primary development board with Ethernet
+  - Nucleo F439ZI (STM32F439ZI) - STM32 board with Ethernet
 - **Control Interfaces**:
   - USB serial shell (115200 baud)
   - Ethernet REST API with JSON endpoints
@@ -51,8 +53,12 @@ cd sw
 source .venv/bin/activate
 source zephyr/zephyr-env.sh
 
-# Build and flash firmware
+# Build and flash firmware (FRDM-K64F)
 west build -b frdm_k64f jtag-switch
+west flash
+
+# Or build for Nucleo F439ZI
+west build -b nucleo_f439zi jtag-switch
 west flash
 ```
 
