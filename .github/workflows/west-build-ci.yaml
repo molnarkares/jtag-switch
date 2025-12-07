@@ -36,7 +36,7 @@ jobs:
 
       - name: Build
         run: |
-          cd sw && west build -b frdm_k64f -p jtag-switch
+          cd sw && west build -p -b frdm_k64f jtag-switch
 
       # - name: Upload artifacts
       #   uses: actions/upload-artifact@v4

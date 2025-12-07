@@ -1,7 +1,7 @@
 # JTAG Switch Test Suite
 
 Comprehensive Python-based test framework for verifying JTAG Switch REST API endpoints, serial shell commands, and web UI functionality.
-Limited set of tests can run on simulated node.    
+Limited set of tests can run on simulated node.
 
 ## Features
 
