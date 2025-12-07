@@ -30,6 +30,45 @@ The application supports any Zephyr-compatible microcontroller EVB. Pre-configur
 
 **Adding New Boards**: Any Zephyr-supported board can be used by creating a simple device tree overlay that maps two GPIO pins. See "Adding Support for New Boards" section below.
 
+## Initial setup
+
+The steps below assume that you are working in Linux environment. The steps are similar on
+MacOs and Windows, too. For the differences consult The Zephyr documentation [Getting Started](https://docs.zephyrproject.org/latest/develop/getting_started/index.htm)
+
+
+### Install the Zephyr dependencies 
+
+Steps are described in the [Zephyr documentation](https://docs.zephyrproject.org/latest/develop/getting_started/index.html#install-dependencies)
+
+
+### Clone the repository
+```bash
+git clone git@github.com:molnarkares/jtag-switch.git
+```
+
+### Create a Python virtual environment
+
+```bash
+cd jtag-switch/sw
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### Install west
+```bash
+pip install west
+```
+
+### Install Zephyr in the application directory
+
+```bash
+west init -l jtag-switch 
+west update
+west zephyr-export
+west packages pip --install
+west sdk install
+```
+
 ## Building
 
 Ensure your Zephyr environment is set up:
