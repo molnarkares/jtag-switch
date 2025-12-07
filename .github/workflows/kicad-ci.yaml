@@ -31,7 +31,7 @@ jobs:
             -v $PWD:/work \
             -w /work \
             ghcr.io/molnarkares/kicad9-kibot:latest \
-            kibot -b hw/jtag_switch.kicad_pcb -c hw/.kibot.yaml
+            kibot -b hw/jtag_switch.kicad_pcb -c hw/.kibot.yaml -d hw
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
