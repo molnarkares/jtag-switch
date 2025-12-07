@@ -1,0 +1,46 @@
+:name: FRDM-K64F-Virtual
+:description: Script to run JTAG Switch firmware on simulated FRDM-K64F
+
+$name?="FRDM-K64F-Virtual"
+
+# Load upstream NXP K6xF platform
+set platform
+"""
+using "platforms/cpus/nxp-k6xf.repl"
+"""
+
+using sysbus
+mach create $name
+machine LoadPlatformDescriptionFromString $platform
+
+# Configure UART0 console
+showAnalyzer uart0
+
+# Set CPU performance (MIPS)
+cpu PerformanceInMips 120
+
+# === TAP Networking for CI/CD ===
+# Create TAP interface for host networking
+# Note: Requires TAP interface to be pre-configured on host:
+#   sudo ip tuntap add dev tap0 mode tap user $USER
+#   sudo ip addr add 192.168.1.1/24 dev tap0
+#   sudo ip link set tap0 up
+#
+# Uncomment the following lines to enable TAP networking:
+# emulation CreateTap "tap0" "tap"
+# emulation CreateSwitch "switch"
+# connector Connect host.tap switch
+# connector Connect sysbus.eth switch
+# host.tap Start
+
+# === Alternative: Isolated simulation without host TAP ===
+# Use internal switch for isolated networking
+emulation CreateSwitch "switch"
+connector Connect sysbus.eth switch
+
+# Reset and load firmware
+macro reset
+"""
+    sysbus LoadELF $elf
+"""
+runMacro $reset

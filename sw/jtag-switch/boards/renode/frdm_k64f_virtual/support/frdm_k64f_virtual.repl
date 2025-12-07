@@ -1,0 +1,8 @@
+// SPDX-License-Identifier: Apache-2.0
+// FRDM-K64F Virtual Platform Extension
+//
+// This file extends the upstream nxp-k6xf.repl platform.
+// Core peripherals (CPU, NVIC, UART0, Ethernet, RNG) come from upstream.
+// GPIO is handled by Zephyr's gpio_emul driver, not Renode peripheral.
+//
+// Add custom peripheral extensions here if needed.

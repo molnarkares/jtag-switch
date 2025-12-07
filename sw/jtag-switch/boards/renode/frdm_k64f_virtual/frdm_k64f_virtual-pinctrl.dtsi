@@ -1,0 +1,49 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Minimal pinctrl for FRDM-K64F Virtual board
+ * Renode doesn't simulate pin muxing, but references are needed for driver init
+ */
+
+#include <nxp/kinetis/MK64FN1M0VLL12-pinctrl.h>
+
+&pinctrl {
+	/* UART0 pinctrl - referenced but not functionally used in simulation */
+	uart0_default: uart0_default {
+		group0 {
+			pinmux = <UART0_RX_PTB16>,
+				 <UART0_TX_PTB17>;
+			drive-strength = "low";
+			slew-rate = "fast";
+		};
+	};
+
+	/* Ethernet pinctrl - referenced but not functionally used in simulation */
+	pinmux_enet: pinmux_enet {
+		group1 {
+			pinmux = <RMII0_RXER_PTA5>,
+				 <RMII0_RXD1_PTA12>,
+				 <RMII0_RXD0_PTA13>,
+				 <RMII0_CRS_DV_PTA14>,
+				 <RMII0_TXEN_PTA15>,
+				 <RMII0_TXD0_PTA16>,
+				 <RMII0_TXD1_PTA17>;
+			drive-strength = "low";
+			slew-rate = "fast";
+		};
+	};
+
+	pinmux_enet_mdio: pinmux_enet_mdio {
+		group0 {
+			pinmux = <RMII0_MDIO_PTB0>;
+			drive-strength = "low";
+			drive-open-drain;
+			bias-pull-up;
+			slew-rate = "fast";
+		};
+		group1 {
+			pinmux = <RMII0_MDC_PTB1>;
+			drive-strength = "low";
+			slew-rate = "fast";
+		};
+	};
+};

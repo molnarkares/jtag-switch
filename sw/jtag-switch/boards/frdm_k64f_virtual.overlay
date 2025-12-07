@@ -1,0 +1,18 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * FRDM-K64F Virtual Board Application Overlay
+ *
+ * Overrides for running JTAG Switch on Renode simulation.
+ * Console redirected to UART0 (USB CDC ACM not simulated).
+ * GPIO uses emulated controller defined in board DTS.
+ */
+
+/ {
+	chosen {
+		/* Override USB CDC ACM console to UART0 */
+		zephyr,console = &uart0;
+		zephyr,shell-uart = &uart0;
+	};
+};
+
+/* JTAG select aliases already defined in board DTS pointing to gpio_emul */
