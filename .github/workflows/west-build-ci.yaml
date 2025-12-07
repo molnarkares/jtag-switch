@@ -1,4 +1,4 @@
-name: KiCad CI (Custom Docker via GHCR)
+name: App build with Zephyr West
 
 on:
   push:
