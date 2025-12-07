@@ -35,12 +35,12 @@ jobs:
       - name: Setup Zephyr project
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
-          app-path: jtag-switch
+          app-path: ../sw/jtag-switch
           toolchains: arm-zephyr-eabi
 
       - name: Build
         run: |
-          west build -b frdm_k64f --pristine sw/jtag-switch
+          west build -b frdm_k64f --pristine jtag-switch
 
       # - name: Upload artifacts
       #   uses: actions/upload-artifact@v4
