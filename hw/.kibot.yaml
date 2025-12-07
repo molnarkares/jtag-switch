@@ -1,3 +1,8 @@
+# Required KiBot version
+kibot:
+  version: 1.8.5
+
+# KiCad version
 kicad_version: 9
 
 # Input files
