@@ -1,26 +1,36 @@
-# Target KiCad version
-kicad_version: 9
-
-# Input files
-inputs:
-  pcb: jtag_switch.kicad_pcb
-  sch: jtag_switch.kicad_sch
+kibot:
+  version: 1
 
 # Outputs
 outputs:
   # Schematic PDF
-  - name: schematic_pdf
-    type: pdf_sch
-    options:
-      output: docs/jtag_switch_schematic.pdf
+  - name: basic_pdf_sch_print
+    comment: Schematic in PDF format
+    type: pdf_sch_print
+    dir: docs
 
   # Gerber files
   - name: gerbers
     type: gerber
-    dir: fabrication/gerber
+    dir: gerber
 
   # Drill files
-  - name: drills
-    type: drill
-    dir: fabrication/gerber
+  - name: basic_excellon
+    comment: Drill files in EXCELLON format
+    type: excellon
+    dir: gerber
+    options:
+      map: pdf
 
+  - name: basic_boardview
+    comment: Board View export
+    type: boardview
+    dir: docs
+
+  - name: generic_bom_csv
+    comment: Generic Bill of Materials in CSV format
+    type: bom
+    dir: docs
+    options:
+      format: CSV
+      count_smd_tht: true
