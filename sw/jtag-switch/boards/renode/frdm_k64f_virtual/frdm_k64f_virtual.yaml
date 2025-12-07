@@ -1,0 +1,25 @@
+identifier: frdm_k64f_virtual
+name: FRDM-K64F Virtual Board (Renode)
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+ram: 256
+flash: 1024
+simulation:
+  - name: renode
+    exec: renode
+testing:
+  default: true
+  ignore_tags:
+    - bluetooth
+    - usb_device
+  renode:
+    uart: sysbus.uart0
+    resc: boards/renode/frdm_k64f_virtual/support/frdm_k64f_virtual.resc
+supported:
+  - uart
+  - gpio
+  - netif:eth
+  - nvs

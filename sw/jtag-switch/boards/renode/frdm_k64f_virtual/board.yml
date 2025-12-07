@@ -1,0 +1,6 @@
+board:
+  name: frdm_k64f_virtual
+  full_name: FRDM-K64F Virtual (Renode)
+  vendor: renode
+  socs:
+    - name: mk64f12

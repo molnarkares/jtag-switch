@@ -1,0 +1,147 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * FRDM-K64F Virtual Board Device Tree for Renode Simulation
+ */
+
+/dts-v1/;
+
+#include <nxp/nxp_k6x.dtsi>
+#include "frdm_k64f_virtual-pinctrl.dtsi"
+#include <zephyr/dt-bindings/gpio/gpio.h>
+#include <zephyr/dt-bindings/clock/kinetis_sim.h>
+
+/ {
+	model = "NXP FRDM-K64F Virtual (Renode)";
+	compatible = "nxp,mk64f12", "nxp,k64f", "nxp,k6x";
+
+	chosen {
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+		zephyr,code-partition = &slot0_partition;
+		/* UART0 console instead of USB CDC ACM (USB not simulated) */
+		zephyr,console = &uart0;
+		zephyr,shell-uart = &uart0;
+		zephyr,settings-partition = &storage_partition;
+		zephyr,entropy = &rnga;
+	};
+
+	aliases {
+		/* JTAG select GPIO aliases using emulated GPIO */
+		jtag-select0 = &jtag_select0_gpio;
+		jtag-select1 = &jtag_select1_gpio;
+	};
+
+	/* Emulated GPIO controller for JTAG select lines */
+	gpio_emul: gpio_emul {
+		status = "okay";
+		compatible = "zephyr,gpio-emul";
+		rising-edge;
+		falling-edge;
+		gpio-controller;
+		#gpio-cells = <2>;
+		ngpios = <4>;
+	};
+
+	/* JTAG select GPIO nodes using emulated GPIO */
+	jtag_select_gpios {
+		compatible = "gpio-leds";
+
+		jtag_select0_gpio: jtag_select_0 {
+			gpios = <&gpio_emul 0 GPIO_ACTIVE_HIGH>;
+			label = "JTAG Select 0 (Emulated)";
+		};
+
+		jtag_select1_gpio: jtag_select_1 {
+			gpios = <&gpio_emul 1 GPIO_ACTIVE_HIGH>;
+			label = "JTAG Select 1 (Emulated)";
+		};
+	};
+};
+
+&sim {
+	pllfll-select = <KINETIS_SIM_PLLFLLSEL_MCGPLLCLK>;
+	er32k-select = <KINETIS_SIM_ER32KSEL_RTC>;
+};
+
+&cpu0 {
+	clock-frequency = <DT_FREQ_M(120)>;
+};
+
+&uart0 {
+	status = "okay";
+	current-speed = <115200>;
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-names = "default";
+};
+
+/* Disable hardware GPIO controllers (not simulated in Renode K6xF) */
+&gpioa { status = "disabled"; };
+&gpiob { status = "disabled"; };
+&gpioc { status = "disabled"; };
+&gpiod { status = "disabled"; };
+&gpioe { status = "disabled"; };
+
+/* Flash partitions (same layout as real board for NVS compatibility) */
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		boot_partition: partition@0 {
+			label = "mcuboot";
+			reg = <0x00000000 DT_SIZE_K(64)>;
+			read-only;
+		};
+
+		slot0_partition: partition@10000 {
+			label = "image-0";
+			reg = <0x00010000 DT_SIZE_K(420)>;
+		};
+
+		slot1_partition: partition@79000 {
+			label = "image-1";
+			reg = <0x00079000 DT_SIZE_K(420)>;
+		};
+
+		storage_partition: partition@e2000 {
+			label = "storage";
+			reg = <0x000e2000 DT_SIZE_K(120)>;
+		};
+	};
+};
+
+/* Ethernet MAC - enabled for REST API testing */
+&enet_mac {
+	status = "okay";
+	pinctrl-0 = <&pinmux_enet>;
+	pinctrl-names = "default";
+	phy-handle = <&phy>;
+	zephyr,random-mac-address;
+	phy-connection-type = "rmii";
+};
+
+&enet_mdio {
+	status = "okay";
+	pinctrl-0 = <&pinmux_enet_mdio>;
+	pinctrl-names = "default";
+
+	phy: phy@0 {
+		compatible = "microchip,ksz8081";
+		reg = <0>;
+		status = "okay";
+		microchip,interface-type = "rmii-25MHz";
+	};
+};
+
+&enet_ptp_clock {
+	status = "disabled"; /* Not needed for basic testing */
+};
+
+&edma0 {
+	status = "okay";
+};
+
+&pit0 {
+	status = "okay";
+};
