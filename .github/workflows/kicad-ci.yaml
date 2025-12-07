@@ -1,4 +1,4 @@
-name: KiCad CI (AppImage + KiCad 9)
+name: KiCad CI (Custom Docker via GHCR)
 
 on:
   push:
@@ -16,25 +16,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download KiCad 9 AppImage
-        run: |
-          wget https://downloads.kicad.org/kicad-9.0.3/kicad-9.0.3-x86_64.AppImage -O kicad.AppImage
-          chmod +x kicad.AppImage
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract AppImage
+      - name: Run KiBot in custom Docker image
         run: |
-          ./kicad.AppImage --appimage-extract
-          export PATH=$PWD/squashfs-root/usr/bin:$PATH
-
-      - name: Install KiBot
-        run: |
-          python3 -m ensurepip --upgrade
-          python3 -m pip install --upgrade pip
-          python3 -m pip install kibot==1.8.4
-
-      - name: Run KiBot
-        run: |
-          kibot -b hw/jtag_switch.kicad_pcb -c hw/.kibot.yaml
+          docker run --rm \
+            -v $PWD:/work \
+            -w /work \
+            ghcr.io/molnarkares/kicad9-kibot:latest \
+            kibot -b hw/jtag_switch.kicad_pcb -c hw/.kibot.yaml
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
