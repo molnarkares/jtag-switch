@@ -1,4 +1,4 @@
-name: KiCad CI
+name: KiCad CI (Docker + KiCad 9)
 
 on:
   push:
@@ -13,14 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run KiBot to generate outputs
-        uses: INTI-CMNB/KiBot@v2
-        with:
-          board: hw/jtag_switch.kicad_pcb
-          config: hw/.kibot.yaml
+      - name: Run KiCad + KiBot in Docker
+        run: |
+          docker run --rm \
+            -v $PWD:/work \
+            -w /work \
+            kicad/kicad:9.0 \
+            bash -c "pip install kibot==1.8.4 && kibot -b hw/jtag_switch.kicad_pcb -c hw/.kibot.yaml"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
