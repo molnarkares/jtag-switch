@@ -1,3 +1,4 @@
+#kibot control file
 kicad_version: 9
 inputs:
   pcb: hw/jtag_switch.kicad_pcb
