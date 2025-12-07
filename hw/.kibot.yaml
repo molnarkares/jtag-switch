@@ -12,13 +12,13 @@ outputs:
   # Gerber files
   - name: gerbers
     type: gerber
-    dir: gerber
+    dir: fabrication
 
   # Drill files
   - name: basic_excellon
     comment: Drill files in EXCELLON format
     type: excellon
-    dir: gerber
+    dir: fabrication
     options:
       map: pdf
 
