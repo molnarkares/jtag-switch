@@ -1,4 +1,4 @@
-name: KiCad CI (Docker + KiCad 9)
+name: KiCad CI (Docker + KiCad 9 Full)
 
 on:
   push:
@@ -21,8 +21,8 @@ jobs:
           docker run --rm \
             -v $PWD:/work \
             -w /work \
-            kicad/kicad:9.0 \
-            bash -c "apt-get update && apt-get install -y python3 python3-pip && pip3 install kibot==1.8.4 && kibot -b hw/jtag_switch.kicad_pcb -c hw/.kibot.yaml"
+            kicad/kicad:9.0-full \
+            bash -c "pip3 install kibot==1.8.4 && kibot -b hw/jtag_switch.kicad_pcb -c hw/.kibot.yaml"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
