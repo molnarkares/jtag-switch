@@ -1,16 +1,25 @@
-#kibot control file 
+# Target KiCad version
 kicad_version: 9
+
+# Input files
 inputs:
-  pcb: hw/jtag_switch.kicad_pcb
-  sch: hw/jtag_switch.kicad_sch
+  pcb: jtag_switch.kicad_pcb
+  sch: jtag_switch.kicad_sch
+
+# Outputs
 outputs:
+  # Schematic PDF
   - name: schematic_pdf
     type: pdf_sch
     options:
       output: docs/jtag_switch_schematic.pdf
+
+  # Gerber files
   - name: gerbers
     type: gerber
     dir: fabrication/gerber
+
+  # Drill files
   - name: drills
     type: drill
     dir: fabrication/gerber
