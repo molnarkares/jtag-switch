@@ -10,6 +10,10 @@ on:
     paths:
       - 'hw/**'
 
+permissions:
+  contents: write
+  packages: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
