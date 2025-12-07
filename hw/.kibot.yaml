@@ -1,10 +1,16 @@
-kicad_version: 8
+kicad_version: 9
 
+# Input files
+inputs:
+  pcb: jtag_switch.kicad_pcb
+  sch: jtag_switch.kicad_sch
+
+# Outputs
 outputs:
   - name: schematic_pdf
     type: pdf_sch
     options:
-      output: docs/schematic.pdf
+      output: docs/jtag_switch_schematic.pdf
 
   - name: gerbers
     type: gerber
@@ -13,7 +19,3 @@ outputs:
   - name: drills
     type: drill
     dir: fabrication/gerber
-
-inputs:
-  pcb: jtag_switch.kicad_pcb
-  sch: jtag_switch.kicad_sch
