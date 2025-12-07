@@ -35,7 +35,7 @@ The application supports any Zephyr-compatible microcontroller EVB. Pre-configur
 Ensure your Zephyr environment is set up:
 
 ```bash
-cd /home/kares/working/jtag-switch/sw
+cd sw
 source .venv/bin/activate
 source zephyr/zephyr-env.sh
 ```

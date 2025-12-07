@@ -112,7 +112,7 @@ Automated browser testing of the web UI using Playwright headless browser. Tests
 ### Full Installation (HTTP + Serial Tests)
 
 ```bash
-cd /home/kares/working/jtag-switch/sw/jtag-switch/tests
+cd sw/jtag-switch/tests
 
 # Install Python dependencies
 pip install -r requirements.txt
