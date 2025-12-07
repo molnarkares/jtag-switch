@@ -26,7 +26,7 @@ Zephyr RTOS firmware for controlling the JTAG switch hardware:
 - **Platform**: Runs on any Zephyr-supported microcontroller with Arduino headers
 - **Supported Boards**:
   - FRDM-K64F (NXP Kinetis K64) - primary development board with Ethernet
-  - Nucleo F439ZI (STM32F439ZI) - STM32 board with Ethernet
+  - FRDM-MCXC444 (NXP MCX C444) - development board with USB serial only
 - **Control Interfaces**:
   - USB serial shell (115200 baud)
   - Ethernet REST API with JSON endpoints
@@ -57,10 +57,10 @@ source zephyr/zephyr-env.sh
 west build -b frdm_k64f jtag-switch
 west flash
 
-# Or build for Nucleo F439ZI
-west build -b nucleo_f439zi jtag-switch
+# Or build and flash firmwarefor FRDM MCXC444
+west build -b frdm_mcxc444 jtag-switch
 west flash
-```
+
 
 ### Usage
 

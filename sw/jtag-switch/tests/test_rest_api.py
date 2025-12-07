@@ -106,7 +106,6 @@ class StatusTests(BaseTestCase):
 
         # Sanity check: should be less than total RAM
         # FRDM-K64F: 256KB total RAM
-        # Nucleo F439ZI: 256KB total (192KB SRAM0 + 64KB CCM), but heap uses only SRAM0
         # Use 300KB as upper bound to accommodate both boards
         self.assertLess(system['heap_used'], 300 * 1024,
                         "RAM usage exceeds reasonable limit")

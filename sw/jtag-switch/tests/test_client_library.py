@@ -121,7 +121,7 @@ class TestJtagCommands(unittest.TestCase):
 
     def test_jtag_status(self):
         """Test jtag_status delegates to backend"""
-        # Board name is example mock data - actual device may be frdm_k64f, nucleo_f439zi, etc.
+        # Board name is example mock data - actual device may be frdm_k64f, frdm_mcxc444, etc.
         expected_result = {
             'success': True,
             'data': {'select0': 0, 'select1': 1, 'board': 'test_board'},
@@ -225,7 +225,7 @@ class TestDeviceCommands(unittest.TestCase):
 
     def test_device_info(self):
         """Test device_info delegates to backend"""
-        # Board name is example mock data - actual device may be frdm_k64f, nucleo_f439zi, etc.
+        # Board name is example mock data - actual device may be frdm_k64f, frdm_mcxc444, etc.
         expected_result = {
             'success': True,
             'data': {
