@@ -1,0 +1,35 @@
+name: KiCad CI
+
+on:
+  push:
+    paths:
+      - 'hw/**'
+  pull_request:
+    paths:
+      - 'hw/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install KiBot
+        uses: INTI-CMNB/KiBot@v2
+        with:
+          version: latest
+
+      - name: Run KiBot to generate outputs
+        run: |
+          kibot -b hw/jtag_switch.kicad_pcb \
+                -c hw/.kibot.yaml
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hw-build
+          path: |
+            hw/docs
+            hw/fabrication
