@@ -34,3 +34,5 @@ outputs:
     options:
       format: CSV
       count_smd_tht: true
+
+# TODO: remove unnecessary gerbers
