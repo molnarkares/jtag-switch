@@ -127,10 +127,10 @@
 	pinctrl-names = "default";
 
 	phy: phy@0 {
-		compatible = "microchip,ksz8081";
+		compatible = "ethernet-phy";
 		reg = <0>;
 		status = "okay";
-		microchip,interface-type = "rmii-25MHz";
+		fixed-link = "100BASE-T Full-Duplex";
 	};
 };
 
