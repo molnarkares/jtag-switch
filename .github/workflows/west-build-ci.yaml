@@ -1,4 +1,4 @@
-name: Build Firmware
+name: Build and Test Firmware
 
 on:
   push:
@@ -13,6 +13,7 @@ on:
 permissions:
   contents: write
   packages: read
+  checks: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -56,10 +57,68 @@ jobs:
           path: sw/build/zephyr/zephyr.elf
           retention-days: 7
 
-      # - name: Create Release with artifacts
-      #   if: startsWith(github.ref, 'refs/tags/')
-      #   uses: softprops/action-gh-release@v2
-      #   with:
-      #     files: |
-      #       hw/fabrication/*
-      #       hw/docs/*
+  test-renode:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download virtual firmware artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: firmware-frdm_k64f_virtual
+          path: sw/build/zephyr/
+
+      - name: Verify firmware downloaded
+        run: |
+          ls -la sw/build/zephyr/
+          test -f sw/build/zephyr/zephyr.elf
+
+      - name: Cache Renode portable
+        id: cache-renode
+        uses: actions/cache@v4
+        with:
+          path: renode_portable
+          key: renode-1.16.0-linux-portable
+
+      - name: Install Renode
+        if: steps.cache-renode.outputs.cache-hit != 'true'
+        run: |
+          wget -q https://github.com/renode/renode/releases/download/v1.16.0/renode-1.16.0.linux-portable.tar.gz
+          mkdir -p renode_portable
+          tar xzf renode-1.16.0.linux-portable.tar.gz -C renode_portable --strip-components=1
+
+      - name: Verify Renode installation
+        run: ./renode_portable/renode --version
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Install test dependencies
+        run: pip install pytest pytest-timeout colorama
+
+      - name: Run Renode simulation tests
+        env:
+          RENODE_PATH: ${{ github.workspace }}/renode_portable/renode
+        working-directory: sw/jtag-switch/tests
+        run: pytest test_renode.py -v --tb=short --timeout=120 --junitxml=renode-results.xml
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: renode-test-results
+          path: sw/jtag-switch/tests/renode-results.xml
+          retention-days: 30
+
+      - name: Publish test results
+        if: always()
+        uses: mikepenz/action-junit-report@v4
+        with:
+          report_paths: sw/jtag-switch/tests/renode-results.xml
+          check_name: Renode Simulation Tests
+          fail_on_failure: true
