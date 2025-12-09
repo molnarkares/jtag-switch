@@ -22,17 +22,22 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/zephyrproject-rtos/ci:v0.27.4
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup west workspace
-        run: |
-          west init -l sw/jtag-switch
-          west update --narrow -o=--depth=1
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Setup Zephyr project
+        uses: zephyrproject-rtos/action-zephyr-setup@v1
+        with:
+          base-path: sw
+          app-path: jtag-switch
+          toolchains: arm-zephyr-eabi
 
       - name: Build all targets
         run: |
