@@ -1,4 +1,4 @@
-name: App build with Zephyr West
+name: Build Firmware
 
 on:
   push:
@@ -14,9 +14,20 @@ permissions:
   contents: write
   packages: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - board: frdm_k64f
+          - board: frdm_k64f//virtual
+          - board: frdm_mcxc444
 
     steps:
       - name: Checkout repository
@@ -34,17 +45,16 @@ jobs:
           app-path: jtag-switch
           toolchains: arm-zephyr-eabi
 
-      - name: Build
+      - name: Build firmware (${{ matrix.board }})
         run: |
-          cd sw && west build -p -b frdm_k64f jtag-switch
+          cd sw && west build -p -b ${{ matrix.board }} jtag-switch
 
-      # - name: Upload artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: hw-build
-      #     path: |
-      #       hw/docs
-      #       hw/fabrication
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-${{ matrix.board == 'frdm_k64f//virtual' && 'frdm_k64f_virtual' || matrix.board }}
+          path: sw/build/zephyr/zephyr.elf
+          retention-days: 7
 
       # - name: Create Release with artifacts
       #   if: startsWith(github.ref, 'refs/tags/')
