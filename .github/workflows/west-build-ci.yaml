@@ -22,39 +22,34 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - board: frdm_k64f
-          - board: frdm_k64f_virtual
-          - board: frdm_mcxc444
+    container:
+      image: ghcr.io/zephyrproject-rtos/ci:v0.27.4
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-
-      - name: Setup Zephyr project
-        uses: zephyrproject-rtos/action-zephyr-setup@v1
-        with:
-          base-path: sw
-          app-path: jtag-switch
-          toolchains: arm-zephyr-eabi
-
-      - name: Build firmware (${{ matrix.board }})
+      - name: Setup west workspace
         run: |
-          cd sw && west build -p -b ${{ matrix.board }} jtag-switch
+          west init -l sw/jtag-switch
+          west update --narrow -o=--depth=1
 
-      - name: Upload firmware artifact
+      - name: Build all targets
+        run: |
+          cd sw
+          for board in frdm_k64f frdm_k64f_virtual frdm_mcxc444; do
+            echo "::group::Building $board"
+            west build -p -b $board jtag-switch
+            mkdir -p artifacts/$board
+            cp build/zephyr/zephyr.elf artifacts/$board/
+            echo "::endgroup::"
+          done
+
+      - name: Upload firmware artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: firmware-${{ matrix.board }}
-          path: sw/build/zephyr/zephyr.elf
+          name: firmware-all
+          path: sw/artifacts/
           retention-days: 7
 
   test-renode:
@@ -65,16 +60,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download virtual firmware artifact
+      - name: Download firmware artifacts
         uses: actions/download-artifact@v4
         with:
-          name: firmware-frdm_k64f_virtual
-          path: sw/build/zephyr/
+          name: firmware-all
+          path: sw/artifacts/
 
-      - name: Verify firmware downloaded
+      - name: Setup virtual firmware
         run: |
+          mkdir -p sw/build/zephyr
+          cp sw/artifacts/frdm_k64f_virtual/zephyr.elf sw/build/zephyr/
           ls -la sw/build/zephyr/
-          test -f sw/build/zephyr/zephyr.elf
 
       - name: Cache Renode portable
         id: cache-renode
