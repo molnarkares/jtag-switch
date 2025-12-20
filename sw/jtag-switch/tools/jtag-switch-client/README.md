@@ -267,7 +267,7 @@ jtag-switch/tools/jtag-switch-client/
 **Device not found (auto-detect fails)**:
 - Verify device is connected via USB
 - Check `dmesg` (Linux) for USB enumeration
-- Verify VID:PID (0x1FC9:0x0001)
+- Verify VID:PID (0x1FC9:0x4520)
 - Try specifying port manually: `--serial-port /dev/ttyACM0`
 - May need udev rules or root privileges on Linux
 

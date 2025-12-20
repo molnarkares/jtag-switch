@@ -18,8 +18,8 @@ from typing import Optional, List
 logger = logging.getLogger(__name__)
 
 # JTAG Switch USB identifiers (from prj.conf)
-JTAG_SWITCH_VID = 0x1FC9
-JTAG_SWITCH_PID = 0x0001
+JTAG_SWITCH_VID = 0x1209
+JTAG_SWITCH_PID = 0x4520
 JTAG_SWITCH_PRODUCT = "JTAG Switch"
 
 
